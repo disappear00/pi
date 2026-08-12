@@ -2069,6 +2069,22 @@ async function generateModels() {
 
 	// Group by provider and deduplicate by model ID
 	const providers: Record<string, Record<string, Model<any>>> = {};
+
+	// Ensure all KnownProvider entries exist (even if empty) to keep types aligned
+	const ALL_KNOWN_PROVIDERS = [
+		"amazon-bedrock", "ant-ling", "anthropic", "google", "google-vertex",
+		"openai", "azure-openai-responses", "openai-codex", "nvidia", "deepseek",
+		"github-copilot", "xai", "groq", "cerebras", "openrouter",
+		"vercel-ai-gateway", "zai", "zai-coding-cn", "mistral", "minimax",
+		"minimax-cn", "moonshotai", "moonshotai-cn", "huggingface", "fireworks",
+		"together", "opencode", "opencode-go", "kimi-coding",
+		"cloudflare-workers-ai", "cloudflare-ai-gateway",
+		"xiaomi", "xiaomi-token-plan-cn", "xiaomi-token-plan-ams", "xiaomi-token-plan-sgp",
+	];
+	for (const p of ALL_KNOWN_PROVIDERS) {
+		if (!providers[p]) providers[p] = {};
+	}
+
 	for (const model of allModels) {
 		if (!providers[model.provider]) {
 			providers[model.provider] = {};
